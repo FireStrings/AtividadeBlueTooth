@@ -28,21 +28,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cliente"
-                android:onClick="radio_button_click"
+
         />
         <RadioButton
                 android:id="@+id/rbS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Servidor"
-                android:onClick="radio_button_click"/>
+                android:text="Servidor"/>
 
     </RadioGroup>
 
-    <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OK"
-    />
 </LinearLayout>

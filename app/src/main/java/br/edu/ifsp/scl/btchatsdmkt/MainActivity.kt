@@ -60,7 +60,7 @@ class  MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showCreateCategoryDialog()
+//        showCreateCategoryDialog()
 
         historicoAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1)
         historicoListView.adapter = historicoAdapter
@@ -125,7 +125,7 @@ class  MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        //menuInflater.inflate(R.menu.menu_modo_aplicativo,menu)
+        menuInflater.inflate(R.menu.menu_modo_aplicativo,menu)
         return true
     }
 
@@ -302,28 +302,24 @@ class  MainActivity : AppCompatActivity() {
         val rbS = view.findViewById(R.id.rbS) as RadioButton
 
         builder.setView(view);
+        var mode = "";
 
         // set up the ok button
-//        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
-//            val newCategory = categoryEditText.text
-//            var isValid = true
-//            if (newCategory.isBlank()) {
-//                categoryEditText.error = getString(R.string.validation_empty)
-//                isValid = false
-//            }
-//
-//            if (isValid) {
-//                // do something
-//            }
-//
-//            if (isValid) {
-//                dialog.dismiss()
-//            }
-//        }
-//
-//        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
-//            dialog.cancel()
-//        }
+        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+            if ( rbC.isChecked) {
+                mode = "Client";
+
+            } else if( rbS.isChecked){
+                mode = "Server";
+            }
+
+            Toast.makeText(applicationContext,
+                mode, Toast.LENGTH_SHORT).show()
+        }
+
+        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+            dialog.cancel()
+        }
 
         builder.show();
     }
