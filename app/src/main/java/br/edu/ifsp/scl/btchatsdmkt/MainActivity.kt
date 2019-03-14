@@ -60,7 +60,7 @@ class  MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        showCreateCategoryDialog()
+        showCreateCategoryDialog()
 
         historicoAdapter = ArrayAdapter(this,android.R.layout.simple_list_item_1)
         historicoListView.adapter = historicoAdapter
@@ -124,38 +124,38 @@ class  MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_modo_aplicativo,menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu_modo_aplicativo,menu)
+//        return true
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        var retorno = false
-        when (item?.itemId) {
-            R.id.modoClienteMenuItem -> {
-                toast("Configurando modo cliente")
-
-                // (Re)Inicializando a Lista de dispositivos encontrados
-                listaBtsEncontrados = mutableListOf()
-
-                registraReceiver()
-
-                adaptadorBt?.startDiscovery()
-
-                exibirAguardeDialog("Procurando dispositivos Bluetooth", 0)
-                retorno = true
-            }
-            R.id.modoServidorMenuItem -> {
-                toast("Configurando modo servidor")
-
-                val descobertaIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
-                descobertaIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,TEMPO_DESCOBERTA_SERVICO_BLUETOOTH)
-                startActivityForResult(descobertaIntent,ATIVA_DESCOBERTA_BLUETOOTH)
-                retorno = true
-            }
-        }
-        return retorno
-    }
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//        var retorno = false
+//        when (item?.itemId) {
+//            R.id.modoClienteMenuItem -> {
+//                toast("Configurando modo cliente")
+//
+//                // (Re)Inicializando a Lista de dispositivos encontrados
+//                listaBtsEncontrados = mutableListOf()
+//
+//                registraReceiver()
+//
+//                adaptadorBt?.startDiscovery()
+//
+//                exibirAguardeDialog("Procurando dispositivos Bluetooth", 0)
+//                retorno = true
+//            }
+//            R.id.modoServidorMenuItem -> {
+//                toast("Configurando modo servidor")
+//
+//                val descobertaIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
+//                descobertaIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,TEMPO_DESCOBERTA_SERVICO_BLUETOOTH)
+//                startActivityForResult(descobertaIntent,ATIVA_DESCOBERTA_BLUETOOTH)
+//                retorno = true
+//            }
+//        }
+//        return retorno
+//    }
 
     private fun registraReceiver() {
         eventosBtReceiver = eventosBtReceiver?: EventosBluetoothReceiver(this)
@@ -307,14 +307,25 @@ class  MainActivity : AppCompatActivity() {
         // set up the ok button
         builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
             if ( rbC.isChecked) {
-                mode = "Client";
+                toast("Configurando modo cliente")
+
+                // (Re)Inicializando a Lista de dispositivos encontrados
+                listaBtsEncontrados = mutableListOf()
+
+                registraReceiver()
+
+                adaptadorBt?.startDiscovery()
+
+                exibirAguardeDialog("Procurando dispositivos Bluetooth", 0)
 
             } else if( rbS.isChecked){
-                mode = "Server";
+                toast("Configurando modo servidor")
+
+                val descobertaIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
+                descobertaIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,TEMPO_DESCOBERTA_SERVICO_BLUETOOTH)
+                startActivityForResult(descobertaIntent,ATIVA_DESCOBERTA_BLUETOOTH)
             }
 
-            Toast.makeText(applicationContext,
-                mode, Toast.LENGTH_SHORT).show()
         }
 
         builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
