@@ -1,21 +1,30 @@
 package br.edu.ifsp.scl.btchatsdmkt
 
+import android.app.AlertDialog
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
+import android.widget.Button
+import android.widget.EditText
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.Constantes.MENSAGEM_DESCONEXAO
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.Constantes.UUID_SERVICO_BLUETOOTH
 import java.io.IOException
+import android.widget.Toast
+
+
+
 
 // Thread Cliente
 class ThreadCliente(val mainActivity: MainActivity) : Thread() {
     // Dispositivo remotor em modo Servidor selecionado da lista de descoberta
     private var dispositivo: BluetoothDevice? = null
 
+
     // Socket com o dispositivo em modo Servidor
     private var socket: BluetoothSocket? = null
 
     override fun run() {
         try {
+
             // Estabelece um Socket RFCOMM com o dispositivo escolhido usando o UUID do Serviço
             socket = dispositivo?.createRfcommSocketToServiceRecord(UUID_SERVICO_BLUETOOTH)
             // Estabelece a conexão. Isso vai encaixar lá no serverSocket.accept() do Servidor
@@ -34,6 +43,7 @@ class ThreadCliente(val mainActivity: MainActivity) : Thread() {
         this.dispositivo = dispositivo
         start()
     }
+
 
     fun parar() {
         try {

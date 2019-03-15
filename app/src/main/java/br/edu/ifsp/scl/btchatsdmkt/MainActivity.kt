@@ -17,12 +17,11 @@ import android.os.Handler
 import android.os.Message
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.PermissionChecker
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.RadioButton
-import android.widget.Toast
+import android.widget.*
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.Constantes.ATIVA_BLUETOOTH
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.Constantes.ATIVA_DESCOBERTA_BLUETOOTH
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.Constantes.MENSAGEM_DESCONEXAO
@@ -42,7 +41,7 @@ class  MainActivity : AppCompatActivity() {
 
     // Lista de Disspositivos
     var listaBtsEncontrados: MutableList<BluetoothDevice>? = null
-
+    var nome : String = ""
 
     // BroadcastReceiver para eventos descoberta e finalização de busca
     private var eventosBtReceiver: EventosBluetoothReceiver? = null
@@ -239,9 +238,33 @@ class  MainActivity : AppCompatActivity() {
 
     fun trataSocket(socket: BluetoothSocket?) {
         aguardeDialog?.dismiss()
-        threadComunicacao = ThreadComunicacao(this)
-        threadComunicacao?.iniciar(socket)
+
+
+        nomeia(socket)
+        //Log.d("banana2", "ohosdhioisdhvoisdhviosdhv"
+
+
     }
+
+    fun nomeia(socket: BluetoothSocket?){
+        this.runOnUiThread(Runnable {
+            val ctx = this
+            val builderName = AlertDialog.Builder(ctx)
+            val viewName = this.layoutInflater.inflate(R.layout.dialogname, null)
+            val editTextName = viewName.findViewById(R.id.name) as EditText
+            builderName.setView(viewName)
+            builderName.setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
+                nome = editTextName.text.toString()
+                threadComunicacao = ThreadComunicacao(this, nome)
+                threadComunicacao?.iniciar(socket)
+
+            }
+
+            builderName.show()
+        })
+    }
+
+
 
     private fun trataSelecaoServidor(dialog: DialogInterface, which: Int) {
         iniciaThreadCliente(which)

@@ -1,6 +1,8 @@
 package br.edu.ifsp.scl.btchatsdmkt
 
+import android.app.AlertDialog
 import android.bluetooth.BluetoothSocket
+import android.content.DialogInterface
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.Constantes.MENSAGEM_DESCONEXAO
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.Constantes.MENSAGEM_TEXTO
 import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.inputStream
@@ -8,17 +10,30 @@ import br.edu.ifsp.scl.btchatsdmkt.BluetoothSingleton.outputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioButton
 
-class ThreadComunicacao(val mainActivity: MainActivity) : Thread() {
+class ThreadComunicacao(val mainActivity: MainActivity, val nomeConexao:String) : Thread() {
     private var socket: BluetoothSocket? = null
 
+
     override fun run() {
+
         try {
+            var nome = ""
+            //showCreateCategoryDialog()
             // Recupera o nome do dispositivo remoto
-            var nome = socket!!.remoteDevice.name
+            if(nomeConexao != ""){
+                nome = nomeConexao;
+            }else{
+                nome = socket!!.remoteDevice.name
+            }
             // Recupera uma referência para os InputStream e OutputStream a partir do Socket
             inputStream = DataInputStream(socket!!.inputStream)
             outputStream = DataOutputStream(socket!!.outputStream)
+            Log.d("banana", "ssgfdgggfFDGDFGFHSGERGDFGDRHSGDFHDFH")
             // Lendo mensagens e escrevendo na Tela Principal
             var mensagem: String?
             while (true) {
@@ -39,6 +54,7 @@ class ThreadComunicacao(val mainActivity: MainActivity) : Thread() {
     fun iniciar(socket: BluetoothSocket?) {
         this.socket = socket
         start()
+
     }
 
     fun parar() {
@@ -51,4 +67,6 @@ class ThreadComunicacao(val mainActivity: MainActivity) : Thread() {
         }
 
     }
+
+
 }
